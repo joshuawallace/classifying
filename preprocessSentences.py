@@ -134,13 +134,17 @@ def main(argv):
     elif opt in ("-v", "--vocabfile"):
       vocabf = arg
 
-  traintxt = path+"/train.txt"
+  #traintxt = path+"/train.txt"
+  if path != '':
+    traintxt = path
+  else:
+    traintxt = "train.txt"
   print 'Path:', path
   print 'Training data:', traintxt
 
   # Tokenize training data (if training vocab doesn't already exist):
+  word_count_threshold = 5
   if (not vocabf):
-    word_count_threshold = 5
     (docs, classes, samples, words) = tokenize_corpus(traintxt, train=True)
     vocab = wordcount_filter(words, num=word_count_threshold)
     # Write new vocab file
@@ -149,9 +153,8 @@ def main(argv):
     outfile.write("\n".join(vocab))
     outfile.close()
   else:
-    word_count_threshold = 0
     (docs, classes, samples) = tokenize_corpus(traintxt, train=False)
-    vocabfile = open(path+"/"+vocabf, 'r')
+    vocabfile = open(vocabf, 'r')
     vocab = [line.rstrip('\n') for line in vocabfile]
     vocabfile.close()
 
@@ -163,17 +166,17 @@ def main(argv):
   print "Doc with smallest number of words in vocab has:", min(numpy.sum(bow, axis=1))
 
   # Write bow file
-  with open(path+"/"+outputf+"_bag_of_words_"+str(word_count_threshold)+".csv", "wb") as f:
+  with open(outputf+"_bag_of_words_"+str(word_count_threshold)+".csv", "wb") as f:
     writer = csv.writer(f)
     writer.writerows(bow)
 
   # Write classes
-  outfile= open(path+"/"+outputf+"_classes_"+str(word_count_threshold)+".txt", 'w')
+  outfile= open(outputf+"_classes_"+str(word_count_threshold)+".txt", 'w')
   outfile.write("\n".join(classes))
   outfile.close()
 
   # Write samples
-  outfile= open(path+"/"+outputf+"_samples_class_"+str(word_count_threshold)+".txt", 'w')
+  outfile= open(outputf+"_samples_class_"+str(word_count_threshold)+".txt", 'w')
   outfile.write("\n".join(samples))
   outfile.close()
 
