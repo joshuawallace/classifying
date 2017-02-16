@@ -143,13 +143,13 @@ def main(argv):
   print 'Training data:', traintxt
 
   # Tokenize training data (if training vocab doesn't already exist):
-  word_count_threshold = 5
+  word_count_threshold = 6
   if (not vocabf):
     (docs, classes, samples, words) = tokenize_corpus(traintxt, train=True)
     vocab = wordcount_filter(words, num=word_count_threshold)
     # Write new vocab file
     vocabf = outputf+"_vocab_"+str(word_count_threshold)+".txt"
-    outfile = codecs.open(path+"/"+vocabf, 'w',"utf-8-sig")
+    outfile = codecs.open(vocabf, 'w',"utf-8-sig")
     outfile.write("\n".join(vocab))
     outfile.close()
   else:
@@ -164,6 +164,8 @@ def main(argv):
   bow = find_wordcounts(docs, vocab)
   # Check: sum over docs to check if any zero word counts
   print "Doc with smallest number of words in vocab has:", min(numpy.sum(bow, axis=1))
+
+  print "Number of features: " + str(len(bow[0]))
 
   # Write bow file
   with open(outputf+"_bag_of_words_"+str(word_count_threshold)+".csv", "wb") as f:
