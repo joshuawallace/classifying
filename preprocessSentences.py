@@ -1,10 +1,10 @@
-import nltk, re, pprint
+import nltk
+import re
 from nltk import word_tokenize
 from nltk.corpus import stopwords
 from os import listdir
 from os.path import isfile, isdir, join
 import numpy
-import re
 import sys
 import getopt
 import codecs
@@ -12,8 +12,11 @@ import time
 import os
 import csv
 
+words_to_ignore = ['bluetooth','burger','egg','etc','motorola','nokia','potato','razr','samsung','sushi','taco','theater','usb','verizon']
+
 chars = ['{','}','#','%','&','\(','\)','\[','\]','<','>',',', '!', '.', ';', 
 '?', '*', '\\', '\/', '~', '_','|','=','+','^',':','\"','\'','@','-']
+
 
 def stem(word):
    regexp = r'^(.*?)(ing|ly|ed|ious|ies|ive|es|s|ment)?$'
@@ -66,7 +69,7 @@ def tokenize_corpus(path, train=True):
     raw = re.sub('[%s]' % ''.join(chars), ' ', raw)
     tokens = word_tokenize(raw)
     tokens = [w.lower() for w in tokens]
-    tokens = [w for w in tokens if w not in stopWords]
+    tokens = [w for w in tokens if w not in stopWords and w not in words_to_ignore]
     tokens = [wnl.lemmatize(t) for t in tokens]
     tokens = [porter.stem(t) for t in tokens]   
     if train == True:
