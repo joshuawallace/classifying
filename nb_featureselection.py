@@ -33,14 +33,25 @@ sentiment_test = np.loadtxt('output/test' + ignore + '_classes_' + number + '.tx
 bagofwords_test = general_f.read_bagofwords_dat('output/test' + ignore + '_bag_of_words_' + number + '.csv')
 
 # Variance threshold
-thresholds_to_try = np.linspace(0, 0.05, 10)
+classifier = BernoulliNB()
+thresholds_to_try = np.linspace(0, 0.01, 10)
 print "Value to compare against: " + str(len(bagofwords_training[0]))
 for val in thresholds_to_try:
-    selector = VarianceThreshold(threshold=val)
-    print selector.fit_transform(bagofwords_training, sentiment_training)
-    # print selector.variances_
+    feature_sel = VarianceThreshold(threshold=val)
+    pipeline = Pipeline([('var_threshold', feature_sel),
+                        ('berno', classifier)])
+    pipeline.fit(bagofwords_training, sentiment_training)
+
+    predict_training = pipeline.predict(bagofwords_training)
+    predict_test     = pipeline.predict(bagofwords_test)
+
+    print ""
+    variances = pipeline.named_steps['var_threshold'].variances_
+    print "Number of features: " + str(len([value for value in variances if value > val]))
+    training_percentage = general_f.accuracy_percentage(predict_training, sentiment_training)
+    print "Training percentage for " + str(val) + " : " + str(training_percentage)
+    test_percentage     = general_f.accuracy_percentage(predict_test, sentiment_test)
+    print "Test percentage for " + str(val) + " :     " + str(test_percentage)
 
 
-# Now, the Bernoulli NB classifier
-# classifier = BernoulliNB().fit(bagofwords_training, sentiment_training)
 
