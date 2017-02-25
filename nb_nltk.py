@@ -11,7 +11,7 @@
 import nltk.classify.util as nltkutil
 from nltk.classify import NaiveBayesClassifier as naivebayes
 import numpy as np
-import datareader as datareader
+import general_functions as general_f
 
 # This converts the bag of words representation of each review
 # into a dictionary format that can be read by the NaiveBayes
@@ -35,8 +35,8 @@ def convert_to_format_that_naivebayes_can_read(vocabulary, bagofwords,
 
 # The number of words needing to appear in training set to be included
 # as vocab.
-number = '6'  # 3 pre-ignoring specific words has .7883333 accuracy, after ignoring same exact accuracy
-ignore = '_ignore'
+number = '6'  # The necessary number of times a word occurs to be in vocab
+ignore = '_ignore'  # Whether to include my "by-hand" feature selection or not
 
 
 # The actual sentiments for the training data
@@ -48,7 +48,7 @@ with open('output/out' + ignore + '_vocab_' + number + '.txt', 'r') as f:
     vocab_training = [line for line in f]
 
 # Read in the bag of words representation of the data
-bagofwords_training = datareader.read_bagofwords_dat('output/out' + ignore + '_bag_of_words_' + number + '.csv')
+bagofwords_training = general_f.read_bagofwords_dat('output/out' + ignore + '_bag_of_words_' + number + '.csv')
 #print bagofwords_training
 #print bagofwords_training[0]
 #
@@ -60,9 +60,12 @@ classifier = naivebayes.train(convert_to_format_that_naivebayes_can_read(vocab_t
 # Now read in the test data
 sentiment_test = np.loadtxt('output/test' + ignore + '_classes_' + number + '.txt',
                             unpack=True)
-bagofwords_test = datareader.read_bagofwords_dat('output/test' + ignore + '_bag_of_words_' + number + '.csv')
+bagofwords_test = general_f.read_bagofwords_dat('output/test' + ignore + '_bag_of_words_' + number + '.csv')
 
 print 'min number of words for vocab: ' + str(number)
-print 'accuracy of training data:' + str(nltkutil.accuracy(classifier, convert_to_format_that_naivebayes_can_read(vocab_training, bagofwords_training, sentiment_training)))
+#print 'accuracy of training data:' + str(nltkutil.accuracy(classifier, convert_to_format_that_naivebayes_can_read(vocab_training, bagofwords_training, sentiment_training)))
 
-print 'accuracy of test data:' + str(nltkutil.accuracy(classifier, convert_to_format_that_naivebayes_can_read(vocab_training, bagofwords_test, sentiment_test)))
+print 'accuracy of test data: ' + str(nltkutil.accuracy(classifier, convert_to_format_that_naivebayes_can_read(vocab_training, bagofwords_test, sentiment_test)))
+print 'other stuff of test data: '
+predict_test = classifier.classify(convert_to_format_that_naivebayes_can_read(vocab_training, bagofwords_test, sentiment_test))
+print general_f.precision_recall_etc(predict_test, sentiment_test)
