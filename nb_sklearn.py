@@ -17,10 +17,10 @@ import general_functions as general_f
 
 
 numbers_array = [3, 4, 5, 6]
-ignore = ''
+ignore = ''  # Whether to include my "by-hand" feature selection or not
 
 for num in numbers_array:
-    number = str(num)
+    number = str(num)  # The necessary number of times a word occurs to be in vocab
     print "############################"
     print "Number of words to be included as vocab is: " + number
     print ""
@@ -32,6 +32,7 @@ for num in numbers_array:
     # Read in the bag of words representation of the data
     bagofwords_training = general_f.read_bagofwords_dat('output/out' + ignore + '_bag_of_words_' + number + '.csv')
 
+    # The same for the test data
     sentiment_test = np.loadtxt('output/test' + ignore + '_classes_' + number + '.txt',
                                 unpack=True)
     bagofwords_test = general_f.read_bagofwords_dat('output/test' + ignore + '_bag_of_words_' + number + '.csv')
@@ -44,9 +45,11 @@ for num in numbers_array:
 
     # Calculate accuracy and print
     training_percentage = general_f.accuracy_percentage(predict_training, sentiment_training)
-    print "GaussNB Training percentage for " + number + " : " + str(training_percentage)
+    #print "GaussNB Training percentage for " + number + " : " + str(training_percentage)
     test_percentage     = general_f.accuracy_percentage(predict_test, sentiment_test)
     print "Gauss NB Test percentage for " + number + " :     " + str(test_percentage)
+    print 'other stuff of test data: '
+    print general_f.precision_recall_etc(predict_test, sentiment_test)
 
     # Now, for the Bernoulli NB classifier
     classifier = BernoulliNB().fit(bagofwords_training, sentiment_training)
@@ -57,9 +60,11 @@ for num in numbers_array:
     # Calculate accuracy and print
     print ""
     training_percentage = general_f.accuracy_percentage(predict_training, sentiment_training)
-    print "BernNB Training percentage for " + number + " : " + str(training_percentage)
+    #print "BernNB Training percentage for " + number + " : " + str(training_percentage)
     test_percentage     = general_f.accuracy_percentage(predict_test, sentiment_test)
     print "BernNB Test percentage for " + number + " :     " + str(test_percentage)
+    print 'other stuff of test data: '          
+    print general_f.precision_recall_etc(predict_test, sentiment_test)
 
     # And finally, for the Multinomial NB classifier
     classifier = MultinomialNB().fit(bagofwords_training, sentiment_training)
@@ -70,6 +75,8 @@ for num in numbers_array:
     # Calculate accuracy and print
     print ""
     training_percentage = general_f.accuracy_percentage(predict_training, sentiment_training)
-    print "MultNB Training percentage for " + number + " : " + str(training_percentage)
+    #print "MultNB Training percentage for " + number + " : " + str(training_percentage)
     test_percentage     = general_f.accuracy_percentage(predict_test, sentiment_test)
     print "MultNB Test percentage for " + number + " :     " + str(test_percentage)
+    print 'other stuff of test data: '
+    print general_f.precision_recall_etc(predict_test, sentiment_test)

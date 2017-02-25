@@ -34,7 +34,7 @@ def accuracy_percentage(classified_sentiment, actual_sentiment):
 def precision_recall_etc(classified_sentiment, actual_sentiment):
     if len(classified_sentiment) != len(actual_sentiment):
         raise RuntimeError("Lengths of arguments to accuracy_percentage not the same")
-    tp, fp, tn, fn = 0  # true/false postiive/negative
+    tp=fp=tn=fn = 0  # true/false postiive/negative
     for i in range(len(classified_sentiment)):
         if actual_sentiment[i] == 1:  # actual sentiment is positive
             if classified_sentiment[i] == actual_sentiment[i]:
@@ -50,9 +50,9 @@ def precision_recall_etc(classified_sentiment, actual_sentiment):
     precision = float(tp)/float(tp + fp)
     recall = float(tp)/float(tp + fn)
     specificity = float(tn)/float(fp + tn)
-    sensitivity = float(tp)/float(tp + fn)
+    NPV = float(tn)/float(tn + fn)
     f1 = 2.*float(precision*recall)/float(precision + recall)
 
     return {'precision': precision, 'recall': recall,
-            'specificity': specificity, 'sensitivity': sensitivity,
+            'specificity': specificity, 'NPV': NPV,
             'f1': f1}

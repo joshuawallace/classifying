@@ -13,7 +13,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier as RFC
 import general_functions as general_f
 
-number = '3'  # The necessary number of times a word occurs to be in vocab
+number = '4'  # The necessary number of times a word occurs to be in vocab
 ignore = ''  # '_ignore'  # Whether to include my "by-hand" feature selection or not
 
 # The actual sentiments for the training data
@@ -36,7 +36,8 @@ predict_test     = classifier.predict(bagofwords_test)
 # Calculate accuracy and print
 print ""
 training_percentage = general_f.accuracy_percentage(predict_training, sentiment_training)
-print "MultNB Training percentage for " + number + " : " + str(training_percentage)
+#print "RFC Training percentage for " + number + " : " + str(training_percentage)
 test_percentage     = general_f.accuracy_percentage(predict_test, sentiment_test)
-print "MultNB Test percentage for " + number + " :     " + str(test_percentage)
-
+print "RFC Test percentage for " + number + " :     " + str(test_percentage)
+print 'other stuff of test data: '
+print general_f.precision_recall_etc(predict_test, sentiment_test)
