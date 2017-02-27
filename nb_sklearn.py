@@ -16,8 +16,8 @@ import numpy as np
 import general_functions as general_f
 
 
-numbers_array = [3, 4, 5, 6]
-ignore = ''  # Whether to include my "by-hand" feature selection or not
+numbers_array = [3]
+ignore = '_ignore'  # Whether to include my "by-hand" feature selection or not
 
 for num in numbers_array:
     number = str(num)  # The necessary number of times a word occurs to be in vocab

@@ -13,8 +13,8 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier as RFC
 import general_functions as general_f
 
-number = '4'  # The necessary number of times a word occurs to be in vocab
-ignore = ''  # '_ignore'  # Whether to include my "by-hand" feature selection or not
+number = '3'  # The necessary number of times a word occurs to be in vocab
+ignore = '_ignore'  # '_ignore'  # Whether to include my "by-hand" feature selection or not
 
 # The actual sentiments for the training data
 sentiment_training = np.loadtxt('output/out' + ignore + '_classes_' + number + '.txt',

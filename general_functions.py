@@ -55,4 +55,5 @@ def precision_recall_etc(classified_sentiment, actual_sentiment):
 
     return {'precision': precision, 'recall': recall,
             'specificity': specificity, 'NPV': NPV,
-            'f1': f1}
+            'f1': f1, 'tp': tp, 'tn': tn, 'fp': fp, 'fn': fn,
+            'accuracy': float(tp + tn)/float(tp + fp + tn + fn)}

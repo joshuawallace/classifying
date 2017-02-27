@@ -69,3 +69,8 @@ print 'accuracy of test data: ' + str(nltkutil.accuracy(classifier, convert_to_f
 print 'other stuff of test data: '
 # predict_test = classifier.classify(convert_to_format_that_naivebayes_can_read(vocab_training, bagofwords_test, sentiment_test))
 # print general_f.precision_recall_etc(predict_test, sentiment_test)
+classified_sentiments = []
+for i in range(len(bagofwords_test)):
+    classified_sentiments.append(classifier.classify(bagofwords_test[i]))
+
+print general_f.precision_recall_etc(classified_sentiments, sentiment_test)
