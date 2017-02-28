@@ -48,7 +48,7 @@ NPV          = []
 f1           = []
 num_features = []
 
-steps_to_try = [10] #np.arange(1, 100, 1)
+steps_to_try = [100] #np.arange(1, 100, 1)
 print steps_to_try
 for val in steps_to_try:
     feature_sel = RFECV(estimator_to_use, step=val, cv=8, n_jobs=3,verbose=1)
@@ -56,14 +56,13 @@ for val in steps_to_try:
                         ('berno', classifier)])
     pipeline.fit(bagofwords_training, sentiment_training)
 
-    predict_training = pipeline.predict(bagofwords_training)
     predict_test     = pipeline.predict(bagofwords_test)
 
     num_features.append(pipeline.named_steps['select'].n_features_)
     # variances = pipeline.named_steps['var_threshold'].variances_
     # print "Number of features: " + str(len([value for value in variances if value > val]))
     output = general_f.precision_recall_etc(predict_test, sentiment_test)
-    #print output
+    print output
     precision.append(output['precision'])
     recall.append(output['recall'])
     specificity.append(output['specificity'])
