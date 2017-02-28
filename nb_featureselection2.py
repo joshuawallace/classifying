@@ -2,12 +2,14 @@
 # Created 2-21-17 by JJW
 # HW1 COS 424
 # Implements scikit-learn's Binomial NB classifier
-# on some reviews, and then performs some feature selection,
-# also using scikit-learn
+# and Random Forest classifier
+# on some reviews, and then performs some feature selection
+# using scikit-learn's SelectKBest feature selector
 #
 # AGBTG
 # ###########
-# http://scikit-learn.org/stable/modules/feature_selection.html
+# This website helped me
+# http://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectKBest.html#sklearn.feature_selection.SelectKBest
 
 
 from sklearn.naive_bayes import BernoulliNB
@@ -49,29 +51,35 @@ NPV          = []
 f1           = []
 num_features = []
 
+# The different values of k to try for select k best
 k_to_try = np.arange(812, 50, -1)
 # print k_to_try
-k_to_try = [k_to_try[25]]
-print k_to_try
-print "Value to compare against: " + str(len(bagofwords_training[0]))
+
+# Loop over different values of k
 for val in k_to_try:
-    if val % 10 == 0:
+    if val % 10 == 0:  # periodically print out to measure progress
         print val
+
+    # Define the feature selection
     feature_sel = SelectKBest(score_func=mutual_info_classif, k=val)
+
+    # Define a pipeline to do feature selection and train the data
     pipeline = Pipeline([('select', feature_sel),
                         ('berno', classifier)])
     pipeline.fit(bagofwords_training, sentiment_training)
 
+    # Predict sentiment using test data
     predict_test     = pipeline.predict(bagofwords_test)
 
+    # Calculate performance and collect
     output = general_f.precision_recall_etc(predict_test, sentiment_test)
-    print output
     precision.append(output['precision'])
     recall.append(output['recall'])
     specificity.append(output['specificity'])
     NPV.append(output['NPV'])
     f1.append(output['f1'])
-"""
+
+# Plot performance as a function of k
 print "precision max: " + str(np.argmax(precision))
 plt.plot(k_to_try, precision, label='precision')
 print "recall max: " + str(np.argmax(recall))
@@ -86,4 +94,4 @@ plt.plot(k_to_try, f1, label='f1')
 plt.legend(loc='best')
 plt.xlabel("k-value")
 plt.ylabel("fraction")
-plt.savefig('pdf/rf_3_ksel_fclassif.pdf')"""
+plt.savefig('pdf/rf_3_ksel_fclassif.pdf')
