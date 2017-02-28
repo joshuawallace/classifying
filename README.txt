@@ -1,16 +1,20 @@
 ----------------------------------------------
 COS 424: Sentiment Analysis Task (Spring 2017)
 ----------------------------------------------
+(borrowed from the original README file provided by the instructors)
 
-This directory comprises the following files
+This directory has the following subdirectories:
 
-- data/train.txt, a training set of 2400 sentiment labelled sentences (from Amazon, Yelp and iMDB) in the following form:
-<sample num>	<sentence> 	<sentiment> 
-where <sentiment> is either 0 (negative) or 1 (positive).
+- data/ where is stored the training and test data sets, stored as
+   <sample num>   <sentence>  <sentiment> 
+   where <sentiment> is either 0 (negative) or 1 (positive).
+- output/ where is stored the processed data from the preprocessSentences.py script.
 
-- data/test.txt, a test set of 600 labelled sentences, in the same format.
+(you will also want to create a pdf directory to store plots from the feature selection scripts, or modify the save paths in those codes)
 
-- preprocessSentences.py, called as follows: 
+-------------------------------------
+
+The code preprocessSentences.py is called as follows: 
 	python ./preprocessSentences.py -p <data> -o <out> -v <vocab>
 <data> is the path of the directory containing train.txt,
 <out> is an optional argument specifying the prefix of output files, and 
@@ -23,3 +27,21 @@ The script generates four output files in <data>:
 	- A 'bag of words' featurized representation of each sentence in the training set, 'out_bag_of_words_*.csv'
 
 ----------------------------------------------
+
+The remaining codes do not take any command line arguments and so can be called simply using `python <filename>`
+
+The files are:
+
+ - general_functions.py, which contains some basic functions used by all the classifier codes (performance calculation, data input)
+
+ - nb_nltk.py, which implements the NB classifier of nltk
+
+ - nb_sklearn.py, which implements the NB classifier of scikit-learn
+
+ - rf_sklearn.py, which implements the random forest classifier of scikit-learn
+
+ - featureselection_varthresh.py, which implements variance threshold feature selection with the Bernoulli NB and RF classifiers
+
+ - featureselection_selectkbest.py, which implements select k best feature selection with the Bernoulli NB and RF classifiers
+
+ - featureselection_recursiveelimination.py, which implements a recursive feature elimination feature selection with the Bernoulli NB and RF classifiers
