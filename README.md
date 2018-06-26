@@ -1,6 +1,10 @@
-----------------------------------------------
-COS 424: Sentiment Analysis Task (Spring 2017)
-----------------------------------------------
+
+# COS 424: Sentiment Analysis Task (Spring 2017)
+
+This was the first homework assignment for COS 424, **"Fundamentals of Machine Learning."**
+
+---
+
 (borrowed from the original README file provided by the instructors)
 
 code found in github.com/joshuawallace/classifying
